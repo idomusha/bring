@@ -7,9 +7,8 @@
 ## Usage
 
 ### Add bring.min.js before your closing <body> tag, after jQuery (requires jQuery 1.7 +)
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script type="text/javascript" src="bring/bring.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascoript" src="bring/bring.min.js"></script>
 
 ### Bring your data
 All parameters are optional.

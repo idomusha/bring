@@ -18,6 +18,9 @@
       // processing status
       ready: true,
 
+      // processing class
+      class: 'js-bring-loading',
+
       // debug mode
       debug: false,
 
@@ -63,13 +66,14 @@
 
       if (s.debug) console.log('##################### load()');
       var loading;
-      var failed;
+      var after;
       var succeed;
+      var failed;
 
       loading = function(jqXHR, settings) {
         if (s.debug) console.log('~~~~~~~~ beforeSend ~~~~~~~~');
         s.ready = false;
-        $('body').addClass('js-bring-loading');
+        $('body').addClass(s.class);
 
         // loader specified
         if ($.isFunction(options.loader)) {
@@ -85,12 +89,10 @@
         }
       }
 
-      succeed = function(data) {
-
-        // default callback
-        if (s.debug) console.log('~~~~~~~~ success ~~~~~~~~');
+      after = function(jqXHR, textStatus ){
+        if (s.debug) console.log('~~~~~~~~ complete ~~~~~~~~');
         s.ready = true;
-        $('body').removeClass('js-bring-loading');
+        $('body').removeClass(s.class);
 
         // NProgress (default loader) : end
         try {
@@ -99,8 +101,14 @@
         catch (e) {
           //console.log(e);
         }
+      }
+
+      succeed = function(data) {
+        if (s.debug) console.log('~~~~~~~~ success ~~~~~~~~');
 
         s.oDataCache[options.url] = data;
+
+        // default callback
 
         // callback specified
         if ($.isFunction(options.callback)) {
@@ -110,16 +118,6 @@
 
       failed = function(jqXHR, textStatus, errorThrown) {
         if (s.debug) console.log('~~~~~~~~ error ~~~~~~~~');
-        s.ready = true;
-        $('body').removeClass('js-bring-loading');
-
-        // NProgress (default loader) : end
-        try {
-          NProgress.done();
-        }
-        catch (e) {
-          //console.log(e);
-        }
 
         // callback specified
         if ($.isFunction(options.fail)) {
@@ -148,6 +146,7 @@
         dataType: options.returned,
         error: failed,
         beforeSend: loading,
+        complete: after,
         success: succeed
       });
     },
